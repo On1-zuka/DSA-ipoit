@@ -41,15 +41,19 @@ public class C_Stairs {
             stairs[i]=scanner.nextInt();
         }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        int result = 0;
+        if (n == 0) return 0;
+        if (n == 1) return stairs[0];
 
+        int[] result = new int[n];
+        result[0] = stairs[0];
+        result[1] = Math.max(stairs[0] + stairs[1], stairs[1]);
 
-
-
+        for (int i = 2; i < n; i++) {
+            result[i] = Math.max(result[i - 1], result[i - 2]) + stairs[i];
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return result[n-1];
     }
-
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = C_Stairs.class.getResourceAsStream("dataC.txt");

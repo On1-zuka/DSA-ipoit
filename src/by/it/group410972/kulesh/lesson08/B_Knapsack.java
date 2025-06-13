@@ -38,9 +38,15 @@ public class B_Knapsack {
         }
 
 
-        int result = 0;
+        int[] result = new int [w+1];
+        for (int i = 0; i < n; i++) {
+            int www = gold[i];
+            for (int j = w; j >= www; j--) {
+                result[j]=Math.max(result[j], result[j-www] +www);
+            }
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return result[w];
     }
 
 
