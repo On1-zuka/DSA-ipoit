@@ -29,12 +29,27 @@ public class B_Sheduler {
         //в период [from, int] (включительно).
         //оптимизация проводится по наибольшему числу непересекающихся событий.
         //Начало и конец событий могут совпадать.
-        List<Event> result;
-        result = new ArrayList<>();
-        //ваше решение.
+        List<Event> result = new ArrayList<>();
 
+        List<Event> filtr = new ArrayList<>();
+        for (Event e : events) {
+            if (e.start >= from && e.stop <= to) {
+                filtr.add(e);
+            }
+        }
 
-        return result;          //вернем итог
+        // Сортируем по времени окончания
+        filtr.sort((e1, e2) -> Integer.compare(e1.stop, e2.stop));
+
+        int currT = from;
+        for (Event e : filtr) {
+            if (e.start >= currT) {
+                result.add(e);
+                currT = e.stop;
+            }
+        }
+
+        return result;
     }
 
     //событие у аудитории(два поля: начало и конец)

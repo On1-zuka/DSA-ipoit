@@ -15,6 +15,8 @@ package by.it.group410972.kulesh.lesson02;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class C_GreedyKnapsack {
@@ -40,17 +42,20 @@ public class C_GreedyKnapsack {
         }
         System.out.printf("Всего предметов: %d. Рюкзак вмещает %d кг.\n", n, W);
 
-        //тут необходимо реализовать решение задачи
-        //итогом является максимально воможная стоимость вещей в рюкзаке
-        //вещи можно резать на кусочки (непрерывный рюкзак)
-        double result = 0;
-        //тут реализуйте алгоритм сбора рюкзака
-        //будет особенно хорошо, если с собственной сортировкой
-        //кроме того, можете описать свой компаратор в классе Item
+        Arrays.sort(items);
+        double result = 0; int weightLeft = W;
 
-        //ваше решение.
-
-
+        for (Item item : items) {
+            if (weightLeft ==0) break;
+            if (weightLeft >= item.weight) {
+                result += item.cost;
+                weightLeft -= item.weight;
+            }
+            else {
+                result += item.cost* ((double) weightLeft / (double) item.weight);
+                weightLeft =0;
+            }
+        }
         System.out.printf("Удалось собрать рюкзак на сумму %f\n", result);
         return result;
     }
@@ -67,17 +72,17 @@ public class C_GreedyKnapsack {
         @Override
         public String toString() {
             return "Item{" +
-                   "cost=" + cost +
-                   ", weight=" + weight +
-                   '}';
+                    "cost=" + cost +
+                    ", weight=" + weight +
+                    '}';
         }
 
         @Override
         public int compareTo(Item o) {
             //тут может быть ваш компаратор
-
-
-            return 0;
+            double this1 = (double)this.cost/this.weight;
+            double other1 = (double)o.cost/o.weight;
+            return Double.compare(other1, this1);
         }
     }
 }
