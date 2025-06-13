@@ -56,31 +56,42 @@ public class A_Huffman {
         System.out.println(result);
     }
 
-    //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
     String encode(InputStream inputStream) throws FileNotFoundException {
-        //прочитаем строку для кодирования из тестового файла
         Scanner scanner = new Scanner(inputStream);
         String s = scanner.next();
 
-        //все комментарии от тестового решения были оставлены т.к. это задание A.
-        //если они вам мешают их можно удалить
-
         Map<Character, Integer> count = new HashMap<>();
-        //1. переберем все символы по очереди и рассчитаем их частоту в Map count
-        //для каждого символа добавим 1 если его в карте еще нет или инкремент если есть.
+        for (char ch : s.toCharArray()) {
+            count.put(ch, count.getOrDefault(ch, 0) + 1);
+        }
 
-        //2. перенесем все символы в приоритетную очередь в виде листьев
         PriorityQueue<Node> priorityQueue = new PriorityQueue<>();
+        for (Map.Entry<Character, Integer> entry : count.entrySet()) {
+            priorityQueue.add(new LeafNode(entry.getValue(), entry.getKey()));
+        }
 
-        //3. вынимая по два узла из очереди (для сборки родителя)
-        //и возвращая этого родителя обратно в очередь
-        //построим дерево кодирования Хаффмана.
-        //У родителя частоты детей складываются.
+        // Специальный случай: только один уникальный символ
+        if (priorityQueue.size() == 1) {
+            LeafNode only = (LeafNode) priorityQueue.poll();
+            codes.put(only.symbol, "0");
+            return "0".repeat(s.length());
+        }
 
-        //4. последний из родителей будет корнем этого дерева
-        //это будет последний и единственный элемент оставшийся в очереди priorityQueue.
+        while (priorityQueue.size() > 1) {
+            Node left = priorityQueue.poll();
+            Node right = priorityQueue.poll();
+            priorityQueue.add(new InternalNode(left, right));
+        }
+
+        Node root = priorityQueue.poll();
+        if (root != null) {
+            root.fillCodes(""); // ОБЯЗАТЕЛЬНО
+        }
+
         StringBuilder sb = new StringBuilder();
-        //.....
+        for (char ch : s.toCharArray()) {
+            sb.append(codes.get(ch));
+        }
 
         return sb.toString();
         //01001100100111
@@ -111,7 +122,6 @@ public class A_Huffman {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////
     //расширение базового класса до внутреннего узла дерева
     private class InternalNode extends Node {
         //внутренный узел дерева
@@ -125,17 +135,13 @@ public class A_Huffman {
             this.left = left;
             this.right = right;
         }
-
         @Override
         void fillCodes(String code) {
             left.fillCodes(code + "0");
             right.fillCodes(code + "1");
         }
-
     }
-    //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
 
-    ////////////////////////////////////////////////////////////////////////////////////
     //расширение базового класса до листа дерева
     private class LeafNode extends Node {
         //лист
@@ -153,5 +159,4 @@ public class A_Huffman {
             codes.put(this.symbol, code);
         }
     }
-
 }
