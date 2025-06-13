@@ -41,13 +41,36 @@ public class A_EditDist {
 
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-
-
         int result = 0;
+        int m = one.length();
+        int n = two.length();
+        // инициализация массива мемоизации (размером [m+1][n+1])
+        int [][]mass = new int[m + 1][n + 1];
+
+        // Заполнение таблицы расстояний
+        for (int i = 0; i <= m; i++) {
+            for (int j = 0; j <= n; j++) {
+                if (i == 0) {
+                    mass[i][j] = j; // Вставка всех символов
+                } else if (j == 0) {
+                    mass[i][j] = i; // Удаление всех символов
+                } else if (one.charAt(i - 1) == two.charAt(j - 1)) {
+                    mass[i][j] = mass[i - 1][j - 1]; // Символы равны, изменений не требуется
+                } else {
+                    mass[i][j] = 1 + Math.min(
+                            mass[i - 1][j],     // удаление
+                            Math.min(
+                                    mass[i][j - 1], // вставка
+                                    mass[i - 1][j - 1] // замена
+                            )
+                    );
+                }
+            }
+        }
+        result = mass[m][n];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
-
 
     public static void main(String[] args) throws FileNotFoundException {
         InputStream stream = A_EditDist.class.getResourceAsStream("dataABC.txt");

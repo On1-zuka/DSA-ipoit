@@ -50,11 +50,45 @@ public class C_EditDist {
 
     String getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
+        //   String result = "";
+        int n = one.length();
+        int m = two.length();
+        int[][] mass = new int[n + 1][m + 1];
+        String[][] result = new String[n + 1][m + 1];
 
+        // Инициализация
+        for (int i = 0; i <= n; i++) {
+            mass[i][0] = i;
+            result[i][0] = i == 0 ? "" : result[i - 1][0] + "-"+one.charAt(i - 1)+",";
+        }
 
-        String result = "";
+        for (int j = 0; j <= m; j++) {
+            mass[0][j] = j;
+            result[0][j] = j == 0 ? "" : result[0][j - 1] + "+"+two.charAt(j - 1)+",";
+        }
+
+        // Основной цикл
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                char a = one.charAt(i - 1);
+                char b = two.charAt(j - 1);
+                int costReplace = mass[i - 1][j - 1] + (a == b ? 0 : 1);
+                int costInsert = mass[i][j - 1] + 1;
+                int costDelete = mass[i - 1][j] + 1;
+                mass[i][j] = Math.min(costReplace, Math.min(costInsert, costDelete));
+                if (mass[i][j] == costReplace) {
+                    result[i][j] = result[i - 1][j - 1] + (a == b ? "#," : "~" + b + ",");
+                }
+                else if (mass[i][j] == costInsert) {
+                    result[i][j] = result[i][j - 1] + "+" + b + ",";
+                }
+                else {
+                    result[i][j] = result[i - 1][j] + "-" + a + ",";
+                }
+            }
+        }
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-        return result;
+        return result[n][m];
     }
 
 

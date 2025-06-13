@@ -41,9 +41,26 @@ public class B_EditDist {
 
     int getDistanceEdinting(String one, String two) {
         //!!!!!!!!!!!!!!!!!!!!!!!!!     НАЧАЛО ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
-
-
         int result = 0;
+        int len1 = one.length();
+        int len2 = two.length();
+
+        int [][]mass = new int[len1 + 1][len2 + 1];
+        for (int i = 1; i <= len1; i++) {
+            mass[i][0] = i;
+        }
+        for (int j = 1; j <= len2; j++) {
+            mass[0][j] = j;
+        }
+
+        for (int i = 1; i <= len1; i++) {
+            for (int j = 1; j <= len2; j++) {
+                int cost =(one.charAt(i - 1) == two.charAt(j - 1)) ? 0 : 1;
+                mass[i][j] = Math.min(Math.min(mass[i-1][j]+1, mass[i][j-1]+1),
+                        mass[i-1][j-1]+cost);
+            }
+        }
+        result = mass[len1][len2];
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
