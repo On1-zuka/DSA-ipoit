@@ -15,7 +15,7 @@ public class Lesson04Test {
         A_BinaryFind instance = new A_BinaryFind();
         //long startTime = System.currentTimeMillis();
         int[] result = instance.findIndex(inputStream);
-        //long finishTime = System.currentTimeMillis();
+//        long finishTime = System.currentTimeMillis();
         StringBuilder sb = new StringBuilder();
         for (int index : result) {
             sb.append(index).append(" ");
