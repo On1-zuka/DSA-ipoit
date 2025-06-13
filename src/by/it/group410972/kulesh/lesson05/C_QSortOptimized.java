@@ -28,7 +28,6 @@ import java.util.Scanner;
 
 */
 
-
 public class C_QSortOptimized {
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -63,14 +62,25 @@ public class C_QSortOptimized {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        //   Arrays.sort(segments);
 
+        for (int i = 0; i < m; i++) {
+            int count = 0;
+            for (Segment s : segments) {
+                if (s.start > points[i]) break;
+                if (s.start <= points[i] && s.stop >= points[i]) {
+                    count++;
+                }
+            }
+            result[i] = count;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
 
     //отрезок
-    private class Segment implements Comparable {
+    private class Segment implements Comparable<Segment> {
         int start;
         int stop;
 
@@ -80,9 +90,9 @@ public class C_QSortOptimized {
         }
 
         @Override
-        public int compareTo(Object o) {
-            //подумайте, что должен возвращать компаратор отрезков
-            return 0;
+        public int compareTo(Segment o) {
+            return Integer.compare(this.start, o.start);
+            //return 0;
         }
     }
 

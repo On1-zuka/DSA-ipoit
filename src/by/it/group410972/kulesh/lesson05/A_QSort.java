@@ -2,6 +2,7 @@ package by.it.group410972.kulesh.lesson05;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*
@@ -68,7 +69,19 @@ public class A_QSort {
         }
         //тут реализуйте логику задачи с применением быстрой сортировки
         //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        Arrays.sort(segments);
 
+        for (int i = 0; i < m; i++) {
+            int point = points[i];
+            int count = 0;
+            for (Segment seg : segments) {
+                if (seg.start > point) break; // дальше смысла проверять нет
+                if (point >= seg.start && point <= seg.stop) {
+                    count++;
+                }
+            }
+            result[i] = count;
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
@@ -80,17 +93,20 @@ public class A_QSort {
         int stop;
 
         Segment(int start, int stop) {
-            this.start = start;
-            this.stop = stop;
-            //тут вообще-то лучше доделать конструктор на случай если
-            //концы отрезков придут в обратном порядке
+            if (start <= stop) {
+                this.start = start;
+                this.stop = stop;
+            }
+            else {
+                this.start = stop;
+                this.stop = start;
+            }
         }
 
         @Override
         public int compareTo(Segment o) {
-            //подумайте, что должен возвращать компаратор отрезков
-
-            return 0;
+            return Integer.compare(this.start, o.start);
+            //return 0;
         }
     }
 

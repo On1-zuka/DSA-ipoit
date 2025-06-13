@@ -39,7 +39,29 @@ public class B_CountSort {
             points[i] = scanner.nextInt();
         }
         //тут реализуйте логику задачи с применением сортировки подсчетом
+        int max = points[0];
+        for (int i = 1; i < n; i++) {
+            if (points[i] > max) {
+                max = points[i];
+            }
+        }
 
+        // Создаём массив для подсчёта количества элементов
+        int[] count = new int[max + 1];
+
+        // Подсчитываем количество вхождений каждого элемента
+        for (int i = 0; i < n; i++) {
+            count[points[i]]++;
+        }
+
+        // Восстанавливаем отсортированный массив
+        int index = 0;
+        for (int i = 0; i <= max; i++) {
+            while (count[i] > 0) {
+                points[index++] = i;
+                count[i]--;
+            }
+        }
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return points;
