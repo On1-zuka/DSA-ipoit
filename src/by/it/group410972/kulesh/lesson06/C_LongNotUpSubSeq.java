@@ -2,7 +2,7 @@ package by.it.group410972.kulesh.lesson06;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.Scanner;
+import java.util.*;
 
 /*
 Задача на программирование: наибольшая невозростающая подпоследовательность
@@ -57,8 +57,29 @@ public class C_LongNotUpSubSeq {
         }
         //тут реализуйте логику задачи методами динамического программирования (!!!)
         int result = 0;
-
-
+        int []aaa = new int[n];
+        int []bbb = new int[n];
+        Arrays.fill(aaa, 1);
+        Arrays.fill(bbb, -1);
+        int lassst = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (m[j]>=m[i]&& aaa[j]+1>aaa[i]){
+                    aaa[i]=aaa[j]+1;
+                    bbb[i]=j;
+                }
+            }
+            if (aaa[i]>result){
+                result = aaa[i];
+                lassst = i;
+            }
+        }
+        List<Integer> indices = new ArrayList<>();
+        while (lassst != -1) {
+            indices.add(lassst + 1); // +1 для индексации с единицы
+            lassst = bbb[lassst];
+        }
+        Collections.reverse(indices);
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
         return result;
     }
